@@ -1,0 +1,37 @@
+# Build directories — never commit generated build artifacts
+build/
+build-*/
+cmake-build-*/     
+
+# CMake-generated files that can appear outside build/ in some workflows
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json   
+
+# Editor / IDE
+.vscode/*
+!.vscode/c_cpp_properties.json   
+!.vscode/settings.json           
+.idea/
+*.swp
+*.swo
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Compiled objects, if you ever build outside build/ directly
+*.o
+*.obj
+*.a
+*.so
+*.elf
+*.map
+
+# ctest output
+Testing/
+
+.directory
