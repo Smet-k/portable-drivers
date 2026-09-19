@@ -69,28 +69,31 @@ the data in struct*/
 #define VCOM4L_CMD           0xFF
 
 static void write_cmd(tft_st7735_t* tft, uint8_t cmd) {
+    if (tft->config.io.set_cs) tft->config.io.set_cs(true, tft->config.io.ctx);
     tft->config.io.set_dc(false, tft->config.io.ctx);
     tft->config.io.spi_write(&cmd, 1, tft->config.io.ctx);
+    if (tft->config.io.set_cs) tft->config.io.set_cs(false, tft->config.io.ctx);
 }
 
 static void write_data(tft_st7735_t* tft, const uint8_t* data, size_t len) {
+    if (tft->config.io.set_cs) tft->config.io.set_cs(true, tft->config.io.ctx);
     tft->config.io.set_dc(true, tft->config.io.ctx);
     tft->config.io.spi_write(data, len, tft->config.io.ctx);
+    if (tft->config.io.set_cs) tft->config.io.set_cs(false, tft->config.io.ctx);
 }
 
 static void hw_reset(tft_st7735_t* tft){
     if(!tft) return; 
-    tft->config.io.set_reset(0, tft->config.io.ctx);
+    tft->config.io.set_reset(true, tft->config.io.ctx);
     tft->config.io.delay_ms(10);  
-    tft->config.io.set_reset(1, tft->config.io.ctx);
-    tft->config.io.delay_ms(120); 
+    tft->config.io.set_reset(false, tft->config.io.ctx);
+    tft->config.io.delay_ms(120);
 
     tft->config.state = (tft_st7735_state_t){
         .sleeping = true, .display_on = false, .normal = true,
         .idle = false, .inverted = false,
     };
 }
-
 static void set_addr_window(tft_st7735_t* tft, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1){
     x0 += tft->config.col_offset;
     x1 += tft->config.col_offset;
@@ -226,7 +229,7 @@ tft_st7735_status_t tft_st7735_set_pwctr1(tft_st7735_t* tft, tft_st7735_pwctr1_t
 
 tft_st7735_status_t tft_st7735_set_pwctr2(tft_st7735_t* tft, tft_st7735_pwctr2_t pwctr2){
     write_cmd(tft, PWCTR2_CMD);
-    write_data(tft, pwctr2.bt, 1);
+    write_data(tft, &pwctr2.bt, 1);
     return TFT_ST7735_OK;
 }
 
@@ -277,6 +280,7 @@ tft_st7735_status_t tft_st7735_set_vmctr1(tft_st7735_t* tft, tft_st7735_vmctr1_t
 
     write_cmd(tft, VMCTR1_CMD);
     write_data(tft, p, 2);
+    return TFT_ST7735_OK;
 }
 
 tft_st7735_status_t tft_st7735_set_gamma(tft_st7735_t* tft, const uint8_t gamma_pos[16], const uint8_t gamma_neg[16]) {
