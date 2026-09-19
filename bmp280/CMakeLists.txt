@@ -10,7 +10,7 @@ target_include_directories(bmp280 PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
-target_compile_features(bmp280 PUBLIC c_std_11) # Whats this?
+target_compile_features(bmp280 PUBLIC c_std_11)
 
 target_compile_options(bmp280 PRIVATE -Wall -Wextra -Wpedantic)
 

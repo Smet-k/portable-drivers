@@ -1,0 +1,14 @@
+#ifndef TFT_ST7735_STATUS_H
+#define TFT_ST7735_STATUS_H
+
+typedef enum
+{
+    TFT_ST7735_OK = 0,
+    TFT_ST7735_ERROR,
+    TFT_ST7735_TIMEOUT,
+    TFT_ST7735_INVALID_ARG,
+    TFT_ST7735_NOT_INITIALIZED,
+    TFT_ST7735_INVALID_STATE
+} tft_st7735_status_t;
+
+#endif
